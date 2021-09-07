@@ -5,3 +5,11 @@
     background: blue;
   }
 }
+
+.red {
+  color: red;
+
+  &__item {
+    background-color: red;
+  }
+}
