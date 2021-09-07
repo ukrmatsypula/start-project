@@ -6,6 +6,7 @@ const rename = require("gulp-rename");
 const autoprefixer = require("gulp-autoprefixer");
 const cleanCSS = require("gulp-clean-css");
 const sourcemaps = require("gulp-sourcemaps");
+const browserSync = require("browser-sync").create();
 
 const styles = () => {
   return src("./src/scss/**/*.scss")
@@ -34,4 +35,15 @@ const styles = () => {
     .pipe(dest("./app/css/"));
 };
 
+const watchFiles = () => {
+  browserSync.init({
+    server: {
+      baseDir: "./app",
+    },
+  });
+
+  watch("./src/scss/**/*.scss", styles);
+};
+
 exports.styles = styles;
+exports.watchFiles = watchFiles;
