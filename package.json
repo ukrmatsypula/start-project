@@ -11,6 +11,8 @@
   "dependencies": {},
   "devDependencies": {
     "gulp": "^4.0.2",
-    "gulp-cli": "^2.3.0"
+    "gulp-cli": "^2.3.0",
+    "gulp-sass": "^5.0.0",
+    "sass": "^1.39.0"
   }
 }
