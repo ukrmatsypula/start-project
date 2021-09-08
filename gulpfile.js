@@ -49,6 +49,14 @@ const htmlInclude = () => {
     .pipe(browserSync.stream());
 };
 
+const imgToApp = () => {
+  return src([
+    "./src/img/**.jpg",
+    "./src/img/**.png",
+    "./src/img/**.jpeg",
+  ]).pipe(dest("./app/img"));
+};
+
 const watchFiles = () => {
   browserSync.init({
     server: {
@@ -58,10 +66,13 @@ const watchFiles = () => {
 
   watch("./src/scss/**/*.scss", styles);
   watch("./src/index.html", htmlInclude);
+  watch("./src/img/**.jpg", imgToApp);
+  watch("./src/img/**.jpeg", imgToApp);
+  watch("./src/img/**.png", imgToApp);
 };
 
 exports.styles = styles;
 exports.watchFiles = watchFiles;
 exports.fileinclude = htmlInclude;
 
-exports.default = series(htmlInclude, styles, watchFiles);
+exports.default = series(htmlInclude, styles, imgToApp, watchFiles);
