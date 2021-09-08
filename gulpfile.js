@@ -8,6 +8,21 @@ const cleanCSS = require("gulp-clean-css");
 const sourcemaps = require("gulp-sourcemaps");
 const browserSync = require("browser-sync").create();
 const fileinclude = require("gulp-file-include");
+const svgSprite = require("gulp-svg-sprite");
+
+const svgSprites = () => {
+  return src("./src/img/**.svg")
+    .pipe(
+      svgSprite({
+        mode: {
+          stack: {
+            sprite: "../sprite.svg",
+          },
+        },
+      })
+    )
+    .pipe(dest("./app/img"));
+};
 
 const styles = () => {
   return src("./src/scss/**/*.scss")
@@ -57,6 +72,10 @@ const imgToApp = () => {
   ]).pipe(dest("./app/img"));
 };
 
+const resources = () => {
+  return src("./src/resources/**").pipe(dest("./app"));
+};
+
 const watchFiles = () => {
   browserSync.init({
     server: {
@@ -69,10 +88,19 @@ const watchFiles = () => {
   watch("./src/img/**.jpg", imgToApp);
   watch("./src/img/**.jpeg", imgToApp);
   watch("./src/img/**.png", imgToApp);
+  watch("./src/img/**.svg", svgSprites);
+  watch("./src/resources/**", resources);
 };
 
 exports.styles = styles;
 exports.watchFiles = watchFiles;
 exports.fileinclude = htmlInclude;
 
-exports.default = series(htmlInclude, styles, imgToApp, watchFiles);
+exports.default = series(
+  htmlInclude,
+  styles,
+  imgToApp,
+  svgSprites,
+  resources,
+  watchFiles
+);
