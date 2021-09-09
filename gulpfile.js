@@ -9,6 +9,13 @@ const sourcemaps = require("gulp-sourcemaps");
 const browserSync = require("browser-sync").create();
 const fileinclude = require("gulp-file-include");
 const svgSprite = require("gulp-svg-sprite");
+const ttf2woff = require("gulp-ttf2woff");
+const ttf2woff2 = require("gulp-ttf2woff2");
+
+const fonts = () => {
+  src("./src/fonts/**.ttf").pipe(ttf2woff).pipe(dest("./app/fonts/"));
+  return src("./src/fonts/**.ttf").pipe(ttf2woff2).pipe(dest("./app/fonts/"));
+};
 
 const svgSprites = () => {
   return src("./src/img/**.svg")
@@ -90,6 +97,7 @@ const watchFiles = () => {
   watch("./src/img/**.png", imgToApp);
   watch("./src/img/**.svg", svgSprites);
   watch("./src/resources/**", resources);
+  watch("./src/fonts/**.ttf", fonts);
 };
 
 exports.styles = styles;
@@ -98,6 +106,7 @@ exports.fileinclude = htmlInclude;
 
 exports.default = series(
   htmlInclude,
+  fonts,
   styles,
   imgToApp,
   svgSprites,
