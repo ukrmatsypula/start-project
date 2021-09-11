@@ -11,6 +11,7 @@ const fileinclude = require("gulp-file-include");
 const svgSprite = require("gulp-svg-sprite");
 const ttf2woff = require("gulp-ttf2woff");
 const ttf2woff2 = require("gulp-ttf2woff2");
+const del = require("del");
 
 const fonts = () => {
   src("./src/fonts/**.ttf").pipe(ttf2woff()).pipe(dest("./app/fonts/"));
@@ -90,6 +91,10 @@ const watchFiles = () => {
     },
   });
 
+  const clean = () => {
+    return del(["app/**"]);
+  };
+
   watch("./src/scss/**/*.scss", styles);
   watch("./src/index.html", htmlInclude);
   watch("./src/img/**.jpg", imgToApp);
@@ -105,11 +110,8 @@ exports.watchFiles = watchFiles;
 exports.fileinclude = htmlInclude;
 
 exports.default = series(
-  htmlInclude,
-  fonts,
+  clean,
+  parallel(htmlInclude, fonts, resources, imgToApp, svgSprites),
   styles,
-  imgToApp,
-  svgSprites,
-  resources,
   watchFiles
 );
