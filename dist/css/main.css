@@ -5,8 +5,7 @@
   grid-template-columns: repeat(3, 20%) 200px;
   grid-template-rows: 50px 100px 200px;
   grid-gap: 25px;
-
-  &__item {
-    background: orange;
-  }
+}
+.catalog__item {
+  background: orange;
 }
