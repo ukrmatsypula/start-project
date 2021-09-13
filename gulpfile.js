@@ -8,7 +8,7 @@ const sass = require("gulp-sass")(require("sass"));
 const autoprefixer = require("gulp-autoprefixer");
 const cleancss = require("gulp-clean-css");
 const htmlmin = require("gulp-htmlmin");
-const imageMin = require("gulp-imagemin");
+const imagemin = require("gulp-imagemin");
 const newer = require("gulp-newer");
 const webp = require("gulp-webp");
 const plumber = require("gulp-plumber");
@@ -101,11 +101,13 @@ function styles() {
 }
 
 function images() {
-  return src(path.src.images)
-    .pipe(newer(path.build.images))
-    .pipe(imageMin())
-    .pipe(webp())
-    .pipe(dest(path.build.images));
+  return (
+    src(path.src.images)
+      .pipe(newer(path.build.images))
+      .pipe(imagemin())
+      // .pipe(webp())
+      .pipe(dest(path.build.images))
+  );
 }
 
 function clean() {
@@ -129,4 +131,5 @@ exports.images = images;
 exports.clean = clean;
 exports.startWatch = startWatch;
 exports.serve = serve;
+
 exports.default = parallel(html, styles, scripts, images, startWatch, serve);
